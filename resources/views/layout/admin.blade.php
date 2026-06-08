@@ -88,42 +88,42 @@
                 <ul class="metismenu" id="menu">
 
                     <li>
-                        <a href="/dashboard">
+                        <a href="{{ route('dashboard') }}">
                             <i class="icon-speedometer menu-icon"></i>
                             <span class="nav-text">Dashboard</span>
                         </a>
                     </li>
 
                     <li>
-                        <a href="/jobs">
+                        <a href="{{ route('jobs.index') }}">
                             <i class="icon-briefcase menu-icon"></i>
                             <span class="nav-text">Lowongan</span>
                         </a>
                     </li>
 
                     <li>
-                        <a href="/categories">
+                        <a href="{{ route('categories.index') }}">
                             <i class="icon-tag menu-icon"></i>
                             <span class="nav-text">Kategori</span>
                         </a>
                     </li>
 
                     <li>
-                        <a href="/users">
+                        <a href="{{ route('users.index') }}">
                             <i class="icon-people menu-icon"></i>
                             <span class="nav-text">User</span>
                         </a>
                     </li>
 
                     <li>
-                        <a href="/settings">
+                        <a href="{{ route('settings.index') }}">
                             <i class="icon-settings menu-icon"></i>
                             <span class="nav-text">Setting</span>
                         </a>
                     </li>
 
                     <li>
-                        <a href="/logout">
+                        <a href="{{ route('logout') }}">
                             <i class="icon-logout menu-icon"></i>
                             <span class="nav-text">Logout</span>
                         </a>
