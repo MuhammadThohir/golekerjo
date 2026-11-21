@@ -23,7 +23,15 @@
                 </div>
 
                 <hr>
-
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form action="{{ route('jobs.store') }}"
                       method="POST"
                       enctype="multipart/form-data">
@@ -430,6 +438,7 @@ Tugas:
                     <!-- ========================= -->
                     <!-- PUBLIKASI -->
                     <!-- ========================= -->
+                    @if(auth()->user()->role == 'admin')
 
                     <h5 class="mb-3">
                         Publikasi
@@ -517,8 +526,9 @@ Tugas:
                         </div>
 
                     </div>
-
+                    
                     <hr>
+                    @endif
 
                     <div class="text-right">
 

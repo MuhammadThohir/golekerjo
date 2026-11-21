@@ -5,7 +5,6 @@
 <div class="content-body">
     <div class="container-fluid">
 
-```
     <div class="card">
 
         <div class="card-body">
@@ -105,51 +104,67 @@
 
                                 @if($job->is_premium)
 
-                                    <span class="badge badge-success">
-                                        Ya
-                                    </span>
+                                    <form action="{{ route('jobs.unpremium', $job) }}"
+                                        method="POST">
+
+                                        @csrf
+                                        @method('PATCH')
+
+                                        <button class="btn btn-sm btn-success">
+                                            <i class="fa fa-star"></i>
+                                            Premium
+                                        </button>
+
+                                    </form>
 
                                 @else
 
-                                    <span class="badge badge-secondary">
-                                        Tidak
-                                    </span>
+                                    <form action="{{ route('jobs.premium', $job) }}"
+                                        method="POST">
+
+                                        @csrf
+                                        @method('PATCH')
+
+                                        <button class="btn btn-sm btn-light">
+                                            <i class="fa fa-star-o"></i>
+                                            Biasa
+                                        </button>
+
+                                    </form>
 
                                 @endif
 
                             </td>
 
                             <td>
-
-                                @if($job->status)
-
+                                @if($job->status == 0)
+                                    <span class="badge badge-warning">
+                                        Pending
+                                    </span>
+                                @elseif($job->status == 1)
                                     <span class="badge badge-success">
                                         Aktif
                                     </span>
-
                                 @else
-
                                     <span class="badge badge-danger">
                                         Nonaktif
                                     </span>
-
                                 @endif
-
                             </td>
 
                             <td>
-
                                 {{ \Carbon\Carbon::parse($job->expired_at)->format('d-m-Y') }}
-
                             </td>
 
                             <td>
+                                <a href="{{ route('jobs.show', $job->id) }}"
+                                    class="btn btn-sm btn-info">
+                                    <i class="fa fa-eye"></i>
+                                </a>
 
                                 <a href="{{ route('jobs.edit', $job->id) }}"
                                    class="btn btn-sm btn-light">
-
                                     <i class="fa fa-pencil"></i>
-
                                 </a>
 
                                 <form action="{{ route('jobs.destroy', $job->id) }}"
@@ -164,26 +179,18 @@
                                             onclick="return confirm('Hapus lowongan ini?')">
 
                                         <i class="fa fa-trash"></i>
-
                                     </button>
-
                                 </form>
-
                             </td>
-
                         </tr>
 
                     @empty
 
                         <tr>
-
                             <td colspan="8"
                                 class="text-center">
-
                                 Belum ada data lowongan
-
                             </td>
-
                         </tr>
 
                     @endforelse
@@ -195,9 +202,7 @@
             </div>
 
             <div class="mt-3">
-
                 {{ $jobs->links() }}
-
             </div>
 
         </div>
@@ -205,7 +210,7 @@
     </div>
 
 </div>
-```
+
 
 </div>
 

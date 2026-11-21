@@ -464,6 +464,7 @@
                     <!-- PUBLIKASI -->
                     <!-- ========================= -->
 
+                    @if(auth()->user()->role == 'admin')
                     <h5 class="mb-3">
                         Publikasi
                     </h5>
@@ -551,9 +552,11 @@
                         </div>
 
                     </div>
+                    
 
                     <hr>
-
+                    @endif
+                    
                     <div class="text-right">
 
                         <button type="submit"

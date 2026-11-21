@@ -1,3 +1,6 @@
+@php
+    $setting = \App\Models\Setting::first();
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +10,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>{{ $master['title'] ?? 'Dashboard' }}</title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ $setting->favicon ? Storage::url($setting->favicon) : '/assets/images/favicon.png' }}">
     <!-- Pignose Calender -->
     <link rel="stylesheet" href="/assets/plugins/pg-calendar/css/pignose.calendar.min.css">
     <!-- Chartist -->
@@ -35,16 +38,63 @@
     <div id="main-wrapper">
         <!--=======Nav header start=======-->
         <div class="nav-header">
+
             <div class="brand-logo">
-                <a href="index.html">
-                    <b class="logo-abbr"><img src="/assets/images/logo.png" alt=""> </b>
-                    <span class="logo-compact"><img src="/assets/images/logo-compact.png"
-                            alt=""></span>
-                    <span class="brand-title">
-                        <img src="/assets/images/logo-text.png" alt="">
+
+                <a href="{{ route('dashboard') }}">
+
+                    <b class="logo-abbr">
+
+                        @if($setting && $setting->logo_small)
+
+                            <img src="{{ asset('storage/'.$setting->logo_small) }}"
+                                alt="Logo">
+
+                        @else
+
+                            <img src="/assets/images/logo.png"
+                                alt="Logo">
+
+                        @endif
+
+                    </b>
+
+                    <span class="logo-compact">
+
+                        @if($setting && $setting->logo_small)
+
+                            <img src="{{ asset('storage/'.$setting->logo_small) }}"
+                                alt="Logo">
+
+                        @else
+
+                            <img src="/assets/images/logo-compact.png"
+                                alt="Logo">
+
+                        @endif
+
                     </span>
+
+                    <span class="brand-title">
+
+                        @if($setting && $setting->logo)
+
+                            <img src="{{ asset('storage/'.$setting->logo) }}"
+                                alt="Logo">
+
+                        @else
+
+                            <img src="/assets/images/logo-text.png"
+                                alt="Logo">
+
+                        @endif
+
+                    </span>
+
                 </a>
+
             </div>
+
         </div>
         <!--=======Nav header end=======-->
 
@@ -65,13 +115,32 @@
                             </div>
                             <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
                                 <div class="dropdown-content-body">
+                                    
                                     <ul>
+                                        <li class="px-3 py-2 border-bottom">
+                                            <strong>{{ auth()->user()->name }}</strong><br>
+                                            <small>{{ ucfirst(auth()->user()->role) }}</small><br>
+                                            <small>{{ auth()->user()->email }}</small>
+                                        </li>
                                         <li>
-                                            <a href="/profil"><i class="icon-user"></i>
+                                            <a href="{{ route('profile.edit') }}">
+                                                <i class="icon-user"></i>
                                                 <span>Profile</span></a>
                                         </li>
-                                        <li><a href="/logout"><i class="icon-key"></i>
-                                                <span>Logout</span></a></li>
+                                        <li>
+                                            <a href="#"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form-top').submit();">
+                                                <i class="icon-key"></i>
+                                                <span>Logout</span>
+                                            </a>
+
+                                            <form id="logout-form-top"
+                                                action="{{ route('logout') }}"
+                                                method="POST"
+                                                style="display:none;">
+                                                @csrf
+                                            </form>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -101,32 +170,41 @@
                         </a>
                     </li>
 
+                    @if(auth()->user()->role == 'admin')
                     <li>
                         <a href="{{ route('categories.index') }}">
                             <i class="icon-tag menu-icon"></i>
                             <span class="nav-text">Kategori</span>
                         </a>
                     </li>
-
                     <li>
-                        <a href="{{ route('users.index') }}">
+                       <a href="{{ route('users.index') }}">
                             <i class="icon-people menu-icon"></i>
                             <span class="nav-text">User</span>
                         </a>
                     </li>
-
+                    
                     <li>
                         <a href="{{ route('settings.index') }}">
                             <i class="icon-settings menu-icon"></i>
                             <span class="nav-text">Setting</span>
                         </a>
                     </li>
-
+                    
+                    @endif
                     <li>
-                        <a href="{{ route('logout') }}">
+                        <a href="#"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="icon-logout menu-icon"></i>
                             <span class="nav-text">Logout</span>
                         </a>
+
+                        <form id="logout-form"
+                            action="{{ route('logout') }}"
+                            method="POST"
+                            style="display:none;">
+                            @csrf
+                        </form>
                     </li>
 
                 </ul>
@@ -141,8 +219,13 @@
         <!--=======Footer start=======-->
         <div class="footer">
             <div class="copyright">
-                <p>Copyright &copy; Designed & Developed by <a
-                    href="https://themeforest.net/user/quixlab">Quixlab</a> 2018</p>
+                <p>
+                    @if($setting && $setting->footer_text)
+                        {{ $setting->footer_text }}
+                    @else
+                        Copyright &copy; {{ date('Y') }} Golekerjo
+                    @endif
+                </p>
             </div>
         </div>
         <!--=======Footer end=======-->
